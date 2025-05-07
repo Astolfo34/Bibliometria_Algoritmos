@@ -1,19 +1,25 @@
 #!/bin/bash
 
-# Configuración del entorno virtual
-echo "Configurando entorno virtual..."
-python3 -m venv venv
-source venv/bin/activate
+# Configurar entorno
+echo "1. Configurando directorios..."
+mkdir -p ./data/{raw,processed}/SAGE_RIS
 
-# Instalación de dependencias
-echo "Instalando dependencias..."
+echo "2. Creando/activando entorno virtual..."
+python3 -m venv .venv
+source .venv/bin/activate
+
+echo "3. Instalando dependencias Python..."
 pip install --upgrade pip
-pip install selenium webdriver-manager pandas requests beautifulsoup4
+pip install selenium webdriver-manager
+pip install selenium-stealth
 
-# Descarga de ChromeDriver
-echo "Configurando ChromeDriver..."
-python3 -c "from webdriver_manager.chrome import ChromeDriverManager; ChromeDriverManager().install()"
+echo "4. Verificando instalación de Brave..."
+if ! command -v brave-browser &> /dev/null
+then
+    echo "Brave no encontrado, instalando..."
+    sudo dnf install brave-browser
+fi
 
-echo ""
-echo "¡Configuración completada!"
-echo "Para activar el entorno virtual ejecuta: source venv/bin/activate"
+echo "✅ Configuración completada!"
+echo "Para activar el entorno: source .venv/bin/activate"
+echo "Para ejecutar el script: python descarga_sage_brave.py"
